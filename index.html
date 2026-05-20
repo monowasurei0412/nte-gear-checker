@@ -308,23 +308,25 @@ footer{border-top:1.5px solid var(--paper3);padding:20px 0;font-family:var(--fm)
    tip: ひとことアドバイス
 */
 const CHARAS=[
-  {name:'ナナリ',   rank:'S',role:'atk',    attr:'rei', core:'森に棲む蛍の心',   subs:['cr','cd','ap','dg'],    tip:'手数が多くクリダメが効率よく乗る。<b>クリ率80%を目標</b>にクリ率→クリダメの順で優先。'},
-  {name:'早霧',     rank:'S',role:'atk',    attr:'hyou',core:'深紅の双生蝶',      subs:['cr','cd','ap','dg'],    tip:'<b>クリ率・クリダメ最優先</b>。コアのバフ効果でクリ率が補えるためクリダメも積みやすい。'},
-  {name:'白蔵',     rank:'S',role:'atk',    attr:'ju',  core:'深紅の双生蝶',      subs:['cr','cd','dg','ap'],    tip:'呪属性アタッカー。<b>クリ率→クリダメ→ダメージ%</b>の優先度で厳選しよう。'},
-  {name:'ハソール',  rank:'S',role:'atk',    attr:'hyou',core:'ストリート拳王',    subs:['cd','cr','dg','ap'],    tip:'コア4セット効果でクリ率が補われるため<b>クリダメを最優先</b>に積むのがポイント。'},
-  {name:'ファルディーヤ',rank:'S',role:'atk', attr:'rei', core:'悪魔の血：呪い',    subs:['cr','cd','dg','rp'],    tip:'与ダメ+18%のコア効果が強力。<b>クリ率→クリダメ→耐性貫通</b>の順で積もう。'},
-  {name:'ダフォディール',rank:'S',role:'atk', attr:'yami',core:'ディアボロス',      subs:['cr','cd','dg','rp'],    tip:'闇耐性無視コアが最適。<b>クリ率→クリダメ→ダメージ%</b>で積み、暗星反応を活かす。'},
-  {name:'潯(ほとり)',rank:'S',role:'support',attr:'kou', core:'失われた光',         subs:['er','ip','bp','cr'],    tip:'光属性バッファー。<b>エネルギー回復と連間パワー最優先</b>でスキル回転率を上げる。'},
-  {name:'九原',     rank:'S',role:'support',attr:'rei', core:'森に棲む蛍の心',     subs:['er','ip','bp','cr'],    tip:'<b>連間パワー・エネルギー回復が最優先</b>。攻撃系サブステは不要。スキル回転重視。'},
-  {name:'海月',     rank:'S',role:'support',attr:'yami',core:'ディアボロス',        subs:['er','ip','bp','hp'],    tip:'サポート特化。<b>連間パワー→エネルギー回復→ブレイクパワー</b>の順で厳選しよう。'},
-  {name:'主人公(零)',rank:'S',role:'atk',   attr:'gen', core:'影の信条',            subs:['cr','cd','ap','dg'],    tip:'汎用アタッカー。<b>クリ率→クリダメ→攻撃力%</b>で積む。異能連環の起点として重要。'},
+  // Sランク（恒常）
+  {name:'ナナリ',      rank:'S', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'手数が多くクリダメが効率よく乗る。<b>クリ率80%を目標</b>にクリ率→クリダメの順で優先。'},
+  {name:'早霧',        rank:'S', role:'support', attr:'ju',  core:'深紅の双生蝶',      subs:['er','ip','cr','cd'],  tip:'バフ役。<b>連間パワー・エネルギー回復</b>を優先しつつ、余裕があればクリ率も確保しよう。'},
+  {name:'白蔵',        rank:'S', role:'atk',     attr:'ju',  core:'深紅の双生蝶',      subs:['cr','cd','dg','ap'],  tip:'呪属性アタッカー。<b>クリ率→クリダメ→ダメージ%</b>の優先度で厳選しよう。'},
+  {name:'ハソール',    rank:'S', role:'atk',     attr:'hyou',core:'ストリート拳王',     subs:['cd','cr','dg','ap'],  tip:'コア4セット効果でクリ率が補われるため<b>クリダメを最優先</b>に積むのがポイント。'},
+  {name:'ファルディーヤ',rank:'S',role:'tank',   attr:'rei', core:'悪魔の血：呪い',    subs:['hp','df','bp','cr'],  tip:'生存役。<b>HP%→防御力%</b>を優先。コアの与ダメージ強化でサブ火力も出せる。'},
+  {name:'ダフォディール',rank:'S',role:'atk',    attr:'yami',core:'ディアボロス',       subs:['cr','cd','dg','rp'],  tip:'闇耐性無視コアが最適。<b>クリ率→クリダメ→ダメージ%</b>で積み、暗星反応を活かす。'},
+  {name:'九原',        rank:'S', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'霊属性アタッカー。<b>クリ率→クリダメ</b>を優先。凸で回復も担えるため汎用性が高い。'},
+  {name:'異能者・零',  rank:'S', role:'atk',     attr:'kou', core:'影の信条',           subs:['cr','cd','ap','dg'],  tip:'主人公。<b>クリ率→クリダメ→攻撃力%</b>で積む。異能連環の起点として重要。'},
+  {name:'ちぃちゃん',  rank:'S', role:'atk',     attr:'kou', core:'影の信条',           subs:['cr','cd','ap','dg'],  tip:'光属性アタッカー兼ファンス稼ぎ要員。<b>クリ率→クリダメ</b>を優先して火力を底上げ。'},
+  // Sランク（限定）
+  {name:'潯(ほとり)',  rank:'S限',role:'atk',    attr:'kou', core:'失われた光',         subs:['cr','cd','ap','dg'],  tip:'光属性アタッカー。<b>失われた光</b>が最適コア。クリ率→クリダメ→攻撃力%で積もう。'},
   // Aランク
-  {name:'ちぃちゃん',rank:'A',role:'atk',   attr:'gen', core:'影の信条',            subs:['cr','cd','ap','dg'],    tip:'アタッカー兼ファンス稼ぎ要員。<b>クリ率→クリダメ</b>を優先して火力を底上げ。'},
-  {name:'ハニア',   rank:'A',role:'support',attr:'rei', core:'音速のヘッジホッグ',  subs:['er','ip','bp','ap'],    tip:'バッファー。<b>エネルギー回復最優先</b>でEXレール終結を頻繁に発動させよう。'},
-  {name:'翳(エイ)', rank:'A',role:'atk',    attr:'hyou',core:'ストリート拳王',       subs:['cr','cd','ap','dg'],    tip:'相属性サブアタッカー。<b>クリ率→クリダメ</b>を中心に積み、連環起点として活用。'},
-  {name:'アドレー',  rank:'A',role:'tank',   attr:'gen', core:'小さな大冒険',         subs:['hp','df','bp','ip'],    tip:'タンク兼シールド役。<b>HP%→防御力%</b>を優先。コアのHP増加スタックを活かす。'},
-  {name:'バイザ',   rank:'A',role:'atk',    attr:'ju',  core:'深紅の双生蝶',         subs:['cr','cd','ap','dg'],    tip:'呪属性アタッカー。<b>クリ率80%</b>を目標に、不足分はメインステで補うのがおすすめ。'},
-  {name:'ファントム',rank:'A',role:'support',attr:'gen', core:'音速のヘッジホッグ',   subs:['er','ip','bp','hp'],    tip:'サポート。<b>連間パワー・エネルギー回復</b>を最優先に積み、スキル回転率を維持。'},
+  {name:'翳',          rank:'A', role:'atk',     attr:'hyou',core:'ストリート拳王',     subs:['cr','cd','ap','dg'],  tip:'相属性サブアタッカー。<b>クリ率→クリダメ</b>を中心に積み、連環起点として活用。'},
+  {name:'ミント',      rank:'A', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'霊属性アタッカー。<b>クリ率→クリダメ</b>を積みつつナナリの連環起点として活躍。'},
+  {name:'ハニア',      rank:'A', role:'support', attr:'rei', core:'音速のヘッジホッグ', subs:['er','ip','bp','ap'],  tip:'バッファー。<b>エネルギー回復最優先</b>でEXレール終結を頻繁に発動させよう。'},
+  {name:'エドガー',    rank:'A', role:'tank',    attr:'kou', core:'小さな大冒険',       subs:['hp','df','bp','ip'],  tip:'光属性生存役。<b>HP%→防御力%</b>を優先。耐久を固めてパーティを守ろう。'},
+  {name:'アドレー',    rank:'A', role:'tank',    attr:'ju',  core:'小さな大冒険',       subs:['hp','df','bp','ip'],  tip:'タンク兼シールド役。<b>HP%→防御力%</b>を優先。コアのHP増加スタックを活かす。'},
+  {name:'海月',        rank:'A', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'魂属性アタッカー。<b>クリ率→クリダメ</b>を積み、暗星パーティの一員として活躍。'},
 ];
 
 const ATTR_COLOR={rei:'#9b59b6',kou:'#f1c40f',hyou:'#3498db',ju:'#e74c3c',yami:'#7f8c8d',gen:'#2ecc71'};
@@ -380,12 +382,15 @@ function gr(sc,mx){const p=mx>0?sc/mx:0;return GR.find(g=>p>=g.min)||GR[GR.lengt
 /* ── CHARA GRID ─────────────────────────── */
 function buildCharaGrid(){
   const el=document.getElementById('chara-grid');
-  el.innerHTML=CHARAS.map((c,i)=>`
-    <button type="button" class="chbtn" data-ci="${i}">
+  el.innerHTML=CHARAS.map((c,i)=>{
+    const rankColor=c.rank==='S限'?'#c0392b':c.rank==='S'?'#c0392b':'#7a776e';
+    const rankText='S限'===c.rank||'S'===c.rank?'Sランク':'Aランク';
+    return `<button type="button" class="chbtn" data-ci="${i}">
       <span class="attr-dot" style="background:${ATTR_COLOR[c.attr]||'#888'}"></span>
       <span>${c.name}</span>
-      <span class="rank">${c.rank}ランク</span>
-    </button>`).join('');
+      <span class="rank" style="color:${rankColor}">${rankText}</span>
+    </button>`;
+  }).join('');
   el.querySelectorAll('.chbtn').forEach(b=>b.addEventListener('click',()=>selectChara(+b.dataset.ci)));
 }
 
