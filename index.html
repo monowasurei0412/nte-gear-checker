@@ -6,474 +6,173 @@
 <title>NTE — ギアスコアチェッカー</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-/* ── reset ─────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;scroll-behavior:smooth}
-
-/* ── tokens ─────────────────────────────── */
 :root{
-  --ink:#0b0c0f;
-  --paper:#f0ede6;
-  --paper2:#e6e2d9;
-  --paper3:#d8d4ca;
-  --red:#c0392b;
-  --red2:#e74c3c;
-  --gold:#b8860b;
-  --gold2:#d4a017;
-  --ink2:#2a2924;
-  --ink3:#4a4740;
-  --ink4:#7a776e;
-  --ink5:#aaa89f;
-  --white:#fff;
-  --accent:#c0392b;
-  --ff-disp:'Bebas Neue',sans-serif;
-  --ff-body:'Zen Kaku Gothic New',sans-serif;
-  --ff-mono:'DM Mono',monospace;
+  --ink:#0b0c0f;--paper:#f0ede6;--paper2:#e6e2d9;--paper3:#d8d4ca;
+  --red:#c0392b;--gold:#b8860b;--ink3:#4a4740;--ink4:#7a776e;--ink5:#aaa89f;--white:#fff;
+  --fd:'Bebas Neue',sans-serif;--fb:'Zen Kaku Gothic New',sans-serif;--fm:'DM Mono',monospace;
 }
-
-/* ── base ─────────────────────────────── */
-body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--ff-body);
-  min-height:100vh;
-  position:relative;
-  overflow-x:hidden;
-}
-
-/* noise texture overlay */
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:0;opacity:.6;
-}
-
-/* big diagonal accent stripe */
-body::after{
-  content:'';
-  position:fixed;
-  top:-20%;right:-10%;
-  width:55vw;height:140vh;
-  background:var(--ink);
-  transform:rotate(-12deg);
-  transform-origin:top right;
-  z-index:0;
-  opacity:.04;
-  pointer-events:none;
-}
-
+body{background:var(--paper);color:var(--ink);font-family:var(--fb);min-height:100vh;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(11,12,15,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(11,12,15,.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:-20%;right:-10%;width:55vw;height:140vh;background:var(--ink);transform:rotate(-12deg);transform-origin:top right;z-index:0;opacity:.03;pointer-events:none}
 .page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 20px 100px}
+header{padding:44px 0 32px;border-bottom:3px solid var(--ink);margin-bottom:32px;position:relative}
+.h-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.h-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:var(--red)}
+h1{font-family:var(--fd);font-size:clamp(52px,9vw,92px);line-height:.92;color:var(--ink)}
+h1 em{font-style:normal;color:var(--red)}
+.h-sub{font-size:13px;color:var(--ink4);margin-top:14px;max-width:460px;line-height:1.7}
+.h-num{position:absolute;right:0;top:28px;font-family:var(--fd);font-size:clamp(80px,14vw,180px);color:var(--ink);opacity:.035;line-height:1;pointer-events:none;user-select:none}
 
-/* ── header ─────────────────────────────── */
-header{
-  padding:52px 0 40px;
-  border-bottom:3px solid var(--ink);
-  margin-bottom:36px;
-  position:relative;
-}
-.h-eyebrow{
-  font-family:var(--ff-mono);
-  font-size:10px;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color:var(--ink4);
-  margin-bottom:10px;
-  display:flex;align-items:center;gap:10px;
-}
-.h-eyebrow::before{content:'';display:inline-block;width:32px;height:1px;background:var(--red);vertical-align:middle}
-h1{
-  font-family:var(--ff-disp);
-  font-size:clamp(52px,9vw,96px);
-  line-height:.92;
-  letter-spacing:.01em;
-  color:var(--ink);
-}
-h1 em{
-  font-style:normal;
-  color:var(--red);
-  -webkit-text-stroke:0px;
-}
-.h-sub{
-  font-family:var(--ff-body);
-  font-size:13px;
-  color:var(--ink4);
-  margin-top:14px;
-  max-width:460px;
-  line-height:1.7;
-}
-/* big number watermark */
-.h-num{
-  position:absolute;
-  right:0;top:30px;
-  font-family:var(--ff-disp);
-  font-size:clamp(80px,14vw,180px);
-  color:var(--ink);
-  opacity:.04;
-  line-height:1;
-  pointer-events:none;
-  user-select:none;
-}
+/* CHARA SELECT */
+.chara-section{margin-bottom:24px}
+.chara-label{font-family:var(--fm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink5);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.chara-label::after{content:'';flex:1;height:1px;background:var(--paper3)}
+.chara-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px}
+.chbtn{border:1.5px solid var(--paper3);background:var(--white);padding:8px 6px 7px;cursor:pointer;transition:all .14s;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--fb);font-size:11px;color:var(--ink4);line-height:1.3;text-align:center}
+.chbtn:hover{border-color:var(--ink3);color:var(--ink);background:var(--paper)}
+.chbtn.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.chbtn .rank{font-family:var(--fm);font-size:9px;letter-spacing:.08em;opacity:.7}
+.chbtn .attr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
-/* ── selector rows ─────────────────────────────── */
-.selrow{
-  display:flex;gap:0;
-  border:1.5px solid var(--ink);
-  border-radius:0;
-  margin-bottom:20px;
-  overflow:hidden;
-}
-.selbtn{
-  flex:1;
-  padding:10px 6px;
-  border:none;
-  background:transparent;
-  color:var(--ink4);
-  font-family:var(--ff-body);
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-  transition:all .14s;
-  border-right:1.5px solid var(--ink);
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-}
+/* recommend box */
+.rec-box{border:1.5px solid var(--gold);background:rgba(184,134,11,.06);padding:12px 16px;margin-bottom:16px;display:none}
+.rec-box.show{display:block}
+.rec-title{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.rec-grid{grid-template-columns:1fr}}
+.rec-item .rl{font-size:11px;color:var(--ink4);margin-bottom:3px;font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.rec-item .rv{font-size:13px;font-weight:700;color:var(--ink)}
+.rec-sub{font-size:12px;color:var(--ink4);margin-top:8px;line-height:1.7;border-top:1px solid rgba(184,134,11,.2);padding-top:8px}
+.rec-sub b{color:var(--ink);font-weight:700}
+
+/* role selector */
+.selrow{display:flex;gap:0;border:1.5px solid var(--ink);overflow:hidden;margin-bottom:12px}
+.selbtn{flex:1;padding:10px 6px;border:none;background:transparent;color:var(--ink4);font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;transition:all .14s;border-right:1.5px solid var(--ink);display:flex;flex-direction:column;align-items:center;gap:4px}
 .selbtn:last-child{border-right:none}
-.selbtn svg{width:16px;height:16px;opacity:.5}
+.selbtn svg{width:15px;height:15px;opacity:.5}
 .selbtn:hover{background:var(--paper2);color:var(--ink)}
 .selbtn.on{background:var(--ink);color:var(--paper)}
 .selbtn.on svg{opacity:.8}
-
 .arow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px;align-items:center}
-.albl{font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;color:var(--ink5);text-transform:uppercase;margin-right:4px}
-.abtn{
-  padding:5px 14px;
-  border:1.5px solid var(--paper3);
-  background:transparent;
-  color:var(--ink4);
-  font-family:var(--ff-mono);
-  font-size:11px;
-  cursor:pointer;
-  transition:all .14s;
-  letter-spacing:.05em;
-}
+.albl{font-family:var(--fm);font-size:10px;letter-spacing:.15em;color:var(--ink5);text-transform:uppercase;margin-right:4px}
+.abtn{padding:5px 13px;border:1.5px solid var(--paper3);background:transparent;color:var(--ink4);font-family:var(--fm);font-size:11px;cursor:pointer;transition:all .14s;letter-spacing:.04em}
 .abtn:hover{border-color:var(--ink3);color:var(--ink)}
 .abtn.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
 
-/* ── tabs ─────────────────────────────── */
-.tabs{
-  display:flex;gap:0;
-  border-bottom:1.5px solid var(--ink);
-  margin-bottom:28px;
-}
-.tbtn{
-  padding:10px 22px;
-  border:none;background:transparent;
-  font-family:var(--ff-mono);
-  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink5);cursor:pointer;
-  position:relative;transition:color .14s;
-}
-.tbtn::after{
-  content:'';position:absolute;bottom:-1.5px;left:0;right:0;
-  height:3px;background:var(--red);
-  transform:scaleX(0);transition:transform .2s;
-}
+/* tabs */
+.tabs{display:flex;border-bottom:1.5px solid var(--ink);margin-bottom:28px}
+.tbtn{padding:10px 20px;border:none;background:transparent;font-family:var(--fm);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5);cursor:pointer;position:relative;transition:color .14s}
+.tbtn::after{content:'';position:absolute;bottom:-1.5px;left:0;right:0;height:3px;background:var(--red);transform:scaleX(0);transition:transform .2s}
 .tbtn:hover{color:var(--ink)}
 .tbtn.on{color:var(--ink);font-weight:700}
 .tbtn.on::after{transform:scaleX(1)}
-
-/* ── panels ─────────────────────────────── */
 .panel{display:none;animation:fu .18s ease}
 .panel.on{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── section block ─────────────────────────────── */
-.sblock{
-  border:1.5px solid var(--ink);
-  margin-bottom:16px;
-  background:var(--white);
-}
-.sblock-head{
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1.5px solid var(--ink);
-  padding:10px 16px;
-  background:var(--ink);
-  color:var(--paper);
-}
-.sblock-label{
-  font-family:var(--ff-mono);
-  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-}
+/* sblock */
+.sblock{border:1.5px solid var(--ink);margin-bottom:16px;background:var(--white)}
+.sblock-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid var(--ink);padding:10px 16px;background:var(--ink);color:var(--paper)}
+.sblock-label{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase}
 .sblock-body{padding:16px}
-
-/* core selectors inside sblock */
 .csel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 @media(max-width:520px){.csel-grid{grid-template-columns:1fr}}
-
-.flbl{font-family:var(--ff-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:5px}
-.fsel,.finp{
-  width:100%;
-  background:var(--paper);
-  border:1.5px solid var(--paper3);
-  color:var(--ink);
-  font-family:var(--ff-body);
-  font-size:13px;
-  padding:9px 12px;
-  appearance:none;
-  transition:border-color .14s;
-  border-radius:0;
-}
-.fsel{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%234a4740' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 10px center;
-  padding-right:32px;
-}
-.fsel:focus,.finp:focus{outline:none;border-color:var(--red)}
-.fsel:hover,.finp:hover{border-color:var(--ink3)}
+.flbl{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:5px}
+.fsel,.ninp{background:var(--paper);border:1.5px solid var(--paper3);color:var(--ink);font-family:var(--fb);font-size:13px;padding:9px 12px;transition:border-color .14s;border-radius:0;width:100%}
+.fsel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%234a4740' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px}
+.fsel:focus,.ninp:focus{outline:none;border-color:var(--red)}
+.fsel:hover,.ninp:hover{border-color:var(--ink3)}
 select option{background:#f0ede6}
-
-/* effect box */
-.efbox{
-  border:1.5px solid var(--paper3);
-  border-left:3px solid var(--gold);
-  padding:10px 14px;
-  font-size:12px;
-  color:var(--ink3);
-  line-height:1.8;
-  display:none;margin-bottom:12px;
-  background:var(--paper);
-}
+.efbox{border:1.5px solid var(--paper3);border-left:3px solid var(--gold);padding:10px 14px;font-size:12px;color:var(--ink3);line-height:1.8;display:none;margin-bottom:12px;background:var(--paper)}
 .efbox.show{display:block}
 .efbox strong{color:var(--gold);font-weight:700}
 
-/* stat input rows */
-.sir{
-  display:grid;
-  grid-template-columns:28px 1fr 76px 28px;
-  gap:8px;align-items:center;
-  margin-bottom:8px;
-}
-.wpill{
-  width:28px;height:28px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--ff-mono);font-size:10px;font-weight:500;
-  border:1.5px solid currentColor;
-  flex-shrink:0;
-}
+/* stat rows */
+.sir{display:grid;grid-template-columns:28px 1fr 80px 28px;gap:8px;align-items:center;margin-bottom:8px}
+.wpill{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;font-weight:500;border:1.5px solid currentColor;flex-shrink:0}
 .ws{color:#b8860b;background:rgba(184,134,11,.1)}
 .wa{color:#c0392b;background:rgba(192,57,43,.08)}
 .wb{color:#2c7a5c;background:rgba(44,122,92,.08)}
 .wc{color:var(--ink5);background:transparent}
-
-.ninp{
-  background:var(--paper);
-  border:1.5px solid var(--paper3);
-  color:var(--ink);
-  font-family:var(--ff-mono);
-  font-size:13px;
-  padding:7px 10px;
-  text-align:right;
-  width:100%;
-  transition:border-color .14s;
-}
-.ninp:focus{outline:none;border-color:var(--red)}
-
-.rmbtn{
-  width:28px;height:28px;
-  display:flex;align-items:center;justify-content:center;
-  border:1.5px solid var(--paper3);
-  background:transparent;color:var(--ink5);
-  cursor:pointer;font-size:13px;
-  transition:all .14s;flex-shrink:0;
-}
+.ninp{text-align:right}
+.rmbtn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--paper3);background:transparent;color:var(--ink5);cursor:pointer;font-size:13px;transition:all .14s;flex-shrink:0}
 .rmbtn:hover{border-color:var(--red);color:var(--red);background:rgba(192,57,43,.06)}
-.addbtn{
-  width:100%;padding:9px;
-  border:1.5px dashed var(--paper3);
-  background:transparent;color:var(--ink5);
-  font-family:var(--ff-mono);font-size:11px;
-  letter-spacing:.1em;text-transform:uppercase;
-  cursor:pointer;transition:all .14s;margin-top:6px;
-}
+.addbtn{width:100%;padding:9px;border:1.5px dashed var(--paper3);background:transparent;color:var(--ink5);font-family:var(--fm);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .14s;margin-top:6px}
 .addbtn:hover{border-color:var(--ink3);color:var(--ink3);background:var(--paper)}
 
-/* ── score display ─────────────────────────────── */
-.score-layout{
-  display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;
-  padding:20px 0 12px;
-}
+/* score */
+.score-layout{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;padding:16px 0 8px}
 @media(max-width:480px){.score-layout{grid-template-columns:1fr}}
-
-.score-big-wrap{
-  display:flex;flex-direction:column;align-items:center;
-  gap:2px;
-}
-.score-big{
-  font-family:var(--ff-disp);
-  font-size:72px;
-  line-height:1;
-  color:var(--ink);
-  min-width:90px;text-align:center;
-}
-.score-grade{
-  font-family:var(--ff-disp);
-  font-size:22px;
-  letter-spacing:.08em;
-}
-.score-pts{
-  font-family:var(--ff-mono);
-  font-size:10px;
-  color:var(--ink5);
-  letter-spacing:.12em;
-  text-transform:uppercase;
-}
-
-.score-detail{}
-.score-bar-outer{
-  height:4px;background:var(--paper3);
-  margin-bottom:14px;overflow:hidden;
-}
-.score-bar-inner{
-  height:100%;background:var(--ink);
-  transition:width .4s cubic-bezier(.23,1,.32,1);
-}
-.score-msg{
-  font-family:var(--ff-body);font-size:15px;font-weight:700;
-  margin-bottom:10px;color:var(--ink);
-}
+.score-big-wrap{display:flex;flex-direction:column;align-items:center;gap:2px}
+.score-big{font-family:var(--fd);font-size:72px;line-height:1;color:var(--ink);min-width:90px;text-align:center}
+.score-grade{font-family:var(--fd);font-size:22px;letter-spacing:.08em}
+.score-pts{font-family:var(--fm);font-size:10px;color:var(--ink5);letter-spacing:.12em;text-transform:uppercase}
+.bar-track{height:4px;background:var(--paper3);margin-bottom:14px;overflow:hidden}
+.bar-fill{height:100%;background:var(--ink);transition:width .4s cubic-bezier(.23,1,.32,1)}
+.score-msg{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--ink)}
 .pills{display:flex;flex-wrap:wrap;gap:5px}
-.spill{
-  display:flex;align-items:center;gap:5px;
-  padding:3px 9px;
-  border:1.5px solid var(--paper3);
-  font-size:11px;color:var(--ink3);
-  font-family:var(--ff-mono);
-}
+.spill{display:flex;align-items:center;gap:5px;padding:3px 9px;border:1.5px solid var(--paper3);font-size:11px;color:var(--ink3);font-family:var(--fm)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;border-top:1.5px solid var(--paper3);padding-top:12px;margin-top:4px;font-family:var(--fm);font-size:10px;color:var(--ink5);letter-spacing:.08em}
+.li{display:flex;align-items:center;gap:6px}
 
-/* legend */
-.legend{
-  display:flex;gap:16px;flex-wrap:wrap;
-  border-top:1.5px solid var(--paper3);
-  padding-top:12px;margin-top:4px;
-  font-family:var(--ff-mono);font-size:10px;
-  color:var(--ink5);letter-spacing:.08em;
-}
-.legend-i{display:flex;align-items:center;gap:6px}
-
-/* block cards */
-.bcard{
-  border:1.5px solid var(--paper3);
-  margin-bottom:10px;
-  background:var(--paper);
-}
-.bcard-head{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:8px 14px;
-  border-bottom:1px solid var(--paper3);
-  background:var(--paper2);
-}
-.bcard-num{
-  font-family:var(--ff-mono);font-size:10px;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink4);
-}
-.bcard-score{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--ff-disp);font-size:18px;
-  color:var(--ink);
-}
-.bcard-grade{font-family:var(--ff-mono);font-size:11px;color:var(--ink4)}
+/* blocks */
+.bcard{border:1.5px solid var(--paper3);margin-bottom:10px;background:var(--paper)}
+.bcard-head{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--paper3);background:var(--paper2)}
+.bcard-num{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4)}
+.bcard-score{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-size:18px;color:var(--ink)}
+.bcard-grade{font-family:var(--fm);font-size:11px;color:var(--ink4)}
 .bcard-body{padding:12px 14px}
 
-/* ── total panel ─────────────────────────────── */
-.total-hero{
-  border:1.5px solid var(--ink);
-  background:var(--ink);
-  color:var(--paper);
-  padding:32px 28px 24px;
-  margin-bottom:14px;
-  position:relative;overflow:hidden;
-}
-.total-hero::before{
-  content:'SCORE';
-  position:absolute;right:-10px;top:-8px;
-  font-family:var(--ff-disp);
-  font-size:clamp(60px,12vw,120px);
-  opacity:.07;
-  line-height:1;
-  color:var(--paper);
-  pointer-events:none;
-  user-select:none;
-}
-.total-num{
-  font-family:var(--ff-disp);
-  font-size:clamp(64px,12vw,110px);
-  line-height:.9;
-  color:var(--paper);
-}
-.total-grade-row{
-  display:flex;align-items:baseline;gap:14px;
-  margin:8px 0 4px;
-}
-.total-grade{
-  font-family:var(--ff-disp);
-  font-size:36px;
-  letter-spacing:.08em;
-}
+/* total */
+.total-hero{border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:32px 28px 24px;margin-bottom:14px;position:relative;overflow:hidden}
+.total-hero::before{content:'SCORE';position:absolute;right:-10px;top:-8px;font-family:var(--fd);font-size:clamp(60px,12vw,120px);opacity:.07;line-height:1;color:var(--paper);pointer-events:none;user-select:none}
+.total-num{font-family:var(--fd);font-size:clamp(64px,12vw,110px);line-height:.9;color:var(--paper)}
+.total-grade-row{display:flex;align-items:baseline;gap:14px;margin:8px 0 4px}
+.total-grade{font-family:var(--fd);font-size:36px;letter-spacing:.08em}
 .total-msg{font-size:13px;color:rgba(240,237,230,.6)}
 .total-bar-outer{height:3px;background:rgba(240,237,230,.15);margin-top:16px;overflow:hidden}
 .total-bar-inner{height:100%;background:var(--paper);transition:width .5s cubic-bezier(.23,1,.32,1)}
-
 .split2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 @media(max-width:420px){.split2{grid-template-columns:1fr}}
-.mini-metric{
-  border:1.5px solid var(--ink);
-  padding:14px 16px;background:var(--white);
-}
-.mini-lbl{
-  font-family:var(--ff-mono);font-size:10px;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink5);margin-bottom:4px;
-}
-.mini-val{
-  font-family:var(--ff-disp);font-size:36px;
-  line-height:1;color:var(--ink);
-}
-
+.mini-metric{border:1.5px solid var(--ink);padding:14px 16px;background:var(--white)}
+.mini-lbl{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-bottom:4px}
+.mini-val{font-family:var(--fd);font-size:36px;line-height:1;color:var(--ink)}
 .bklist{display:flex;flex-direction:column;gap:6px}
-.bkrow{
-  display:flex;align-items:center;gap:10px;
-  padding:8px 12px;
-  border:1.5px solid var(--paper3);
-  font-size:12px;
-  font-family:var(--ff-body);
-}
-.bkrow .cnt{
-  margin-left:auto;
-  font-family:var(--ff-mono);font-size:11px;
-  color:var(--ink5);
-}
-
-/* ── footer ─────────────────────────────── */
-footer{
-  border-top:1.5px solid var(--paper3);
-  padding:20px 0;
-  font-family:var(--ff-mono);
-  font-size:10px;letter-spacing:.1em;
-  color:var(--ink5);text-align:center;
-}
+.bkrow{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid var(--paper3);font-size:12px}
+.bkrow .cnt{margin-left:auto;font-family:var(--fm);font-size:11px;color:var(--ink5)}
+.share-btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:9px 18px;background:#1da1f2;color:#fff;border:none;font-family:var(--fb);font-size:13px;font-weight:700;cursor:pointer;transition:opacity .14s;text-decoration:none}
+.share-btn:hover{opacity:.85}
+.share-btn svg{width:16px;height:16px;fill:#fff}
+footer{border-top:1.5px solid var(--paper3);padding:20px 0;font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:var(--ink5);text-align:center}
 </style>
 </head>
 <body>
 <div class="page">
 
-<!-- HEADER -->
 <header>
   <div class="h-num">NTE</div>
   <div class="h-eyebrow">Neverness to Everness — Fan Tool</div>
   <h1>GEAR<br><em>SCORE</em><br>CHECKER</h1>
-  <p class="h-sub">駆動コアとブロックのサブステータスを入力して<br>キャラへの適正をスコアで確認するツールです</p>
+  <p class="h-sub">キャラを選ぶとおすすめコアとサブステが自動設定されます。あとは数値を入力するだけ。</p>
 </header>
+
+<!-- キャラ選択 -->
+<div class="chara-section">
+  <div class="chara-label">キャラクターを選択</div>
+  <div class="chara-grid" id="chara-grid"></div>
+</div>
+
+<!-- おすすめボックス -->
+<div class="rec-box" id="rec-box">
+  <div class="rec-title" id="rec-chara-name">— キャラ名 —</div>
+  <div class="rec-grid">
+    <div class="rec-item"><div class="rl">おすすめコア</div><div class="rv" id="rec-core">—</div></div>
+    <div class="rec-item"><div class="rl">役割</div><div class="rv" id="rec-role">—</div></div>
+  </div>
+  <div class="rec-sub" id="rec-sub"></div>
+</div>
 
 <!-- ROLE -->
 <div class="selrow" id="role-bar">
@@ -509,45 +208,29 @@ footer{
   <button type="button" class="tbtn" data-tab="total">総合スコア</button>
 </div>
 
-<!-- ═══ CORE PANEL ═══ -->
+<!-- CORE PANEL -->
 <div class="panel on" id="panel-core">
-
   <div class="sblock">
-    <div class="sblock-head">
-      <span class="sblock-label">コア選択</span>
-    </div>
+    <div class="sblock-head"><span class="sblock-label">コア選択</span></div>
     <div class="sblock-body">
       <div class="csel-grid">
-        <div>
-          <div class="flbl">コアセット名</div>
-          <select class="fsel" id="core-name-sel"></select>
-        </div>
-        <div>
-          <div class="flbl">メインステータス</div>
-          <select class="fsel" id="core-main-sel"></select>
-        </div>
+        <div><div class="flbl">コアセット名</div><select class="fsel" id="core-name-sel"></select></div>
+        <div><div class="flbl">メインステータス</div><select class="fsel" id="core-main-sel"></select></div>
       </div>
       <div class="efbox" id="effect-box">
-        <div id="eff-epic"></div>
-        <div id="eff-legend"></div>
+        <div id="eff-epic"></div><div id="eff-legend"></div>
       </div>
     </div>
   </div>
-
   <div class="sblock">
-    <div class="sblock-head">
-      <span class="sblock-label">サブステータス — 最大4個</span>
-    </div>
+    <div class="sblock-head"><span class="sblock-label">サブステータス — 最大4個</span></div>
     <div class="sblock-body">
       <div id="core-list"></div>
       <button type="button" class="addbtn" id="core-add-btn">+ サブステータスを追加</button>
     </div>
   </div>
-
   <div class="sblock">
-    <div class="sblock-head">
-      <span class="sblock-label">コア評価</span>
-    </div>
+    <div class="sblock-head"><span class="sblock-label">コア評価</span></div>
     <div class="sblock-body">
       <div class="score-layout">
         <div class="score-big-wrap">
@@ -555,28 +238,28 @@ footer{
           <div class="score-grade" id="core-sgrade">—</div>
           <div class="score-pts">pts</div>
         </div>
-        <div class="score-detail">
-          <div class="score-bar-outer"><div class="score-bar-inner" id="core-bar" style="width:0%"></div></div>
+        <div>
+          <div class="bar-track"><div class="bar-fill" id="core-bar" style="width:0%"></div></div>
           <div class="score-msg" id="core-msg">コアを選択してください</div>
           <div class="pills" id="core-pills"></div>
         </div>
       </div>
     </div>
   </div>
-
   <div class="legend">
-    <div class="legend-i"><span class="wpill ws" style="width:20px;height:20px;font-size:9px">S</span>最優先</div>
-    <div class="legend-i"><span class="wpill wa" style="width:20px;height:20px;font-size:9px">A</span>優先</div>
-    <div class="legend-i"><span class="wpill wb" style="width:20px;height:20px;font-size:9px">B</span>有用</div>
-    <div class="legend-i"><span class="wpill wc" style="width:20px;height:20px;font-size:9px">C</span>低優先</div>
+    <div class="li"><span class="wpill ws" style="width:20px;height:20px;font-size:9px">S</span>最優先</div>
+    <div class="li"><span class="wpill wa" style="width:20px;height:20px;font-size:9px">A</span>優先</div>
+    <div class="li"><span class="wpill wb" style="width:20px;height:20px;font-size:9px">B</span>有用</div>
+    <div class="li"><span class="wpill wc" style="width:20px;height:20px;font-size:9px">C</span>低優先</div>
   </div>
 </div>
 
-<!-- ═══ BLOCKS PANEL ═══ -->
+<!-- BLOCKS PANEL -->
 <div class="panel" id="panel-blocks">
   <div class="sblock">
     <div class="sblock-head">
       <span class="sblock-label">駆動ブロック — 最大8個</span>
+      <span style="font-family:var(--fm);font-size:10px;opacity:.6">コアにはめ込む追加パーツ。1コアに最大4枚まで</span>
     </div>
     <div class="sblock-body">
       <div id="block-list"></div>
@@ -585,7 +268,7 @@ footer{
   </div>
 </div>
 
-<!-- ═══ TOTAL PANEL ═══ -->
+<!-- TOTAL PANEL -->
 <div class="panel" id="panel-total">
   <div class="total-hero">
     <div class="total-num" id="t-num">0</div>
@@ -594,71 +277,90 @@ footer{
       <div class="total-msg" id="t-desc">ステータスを入力してください</div>
     </div>
     <div class="total-bar-outer"><div class="total-bar-inner" id="t-bar" style="width:0%"></div></div>
+    <a class="share-btn" id="share-btn" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      スコアをXに投稿する
+    </a>
   </div>
-
   <div class="split2">
-    <div class="mini-metric">
-      <div class="mini-lbl">駆動コア</div>
-      <div class="mini-val" id="t-core">0</div>
-    </div>
-    <div class="mini-metric">
-      <div class="mini-lbl">ブロック合計</div>
-      <div class="mini-val" id="t-block">0</div>
-    </div>
+    <div class="mini-metric"><div class="mini-lbl">駆動コア</div><div class="mini-val" id="t-core">0</div></div>
+    <div class="mini-metric"><div class="mini-lbl">ブロック合計</div><div class="mini-val" id="t-block">0</div></div>
   </div>
-
   <div class="sblock">
     <div class="sblock-head"><span class="sblock-label">ステータス内訳</span></div>
-    <div class="sblock-body">
-      <div class="bklist" id="t-bklist">
-        <div style="color:var(--ink5);font-size:12px;font-family:var(--ff-mono);padding:10px 0">まだ入力がありません</div>
-      </div>
-    </div>
+    <div class="sblock-body"><div class="bklist" id="t-bklist"><div style="color:var(--ink5);font-size:12px;font-family:var(--fm);padding:10px 0">まだ入力がありません</div></div></div>
   </div>
-
   <div class="legend">
-    <div class="legend-i">SS ≥ 90%</div>
-    <div class="legend-i">S ≥ 70%</div>
-    <div class="legend-i">A ≥ 50%</div>
-    <div class="legend-i">B ≥ 30%</div>
-    <div class="legend-i">C &lt; 30%</div>
+    <div class="li">SS ≥ 90%</div><div class="li">S ≥ 70%</div><div class="li">A ≥ 50%</div>
+    <div class="li">B ≥ 30%</div><div class="li">C &lt; 30%</div>
   </div>
 </div>
 
-</div><!-- /page -->
+</div>
 <footer>NTE GEAR SCORE CHECKER — ファンメイドツール / 非公式 / Neverness to Everness © Hotta Studio</footer>
 
 <script>
-/* ─── DATA ──────────────────────────────────── */
+/* ── CHARA DATA ──────────────────────────────
+   role: atk/support/tank
+   attr: rei/kou/hyou/ju/yami/gen
+   core: おすすめコア名
+   subs: おすすめサブステ優先順 (key配列)
+   tip: ひとことアドバイス
+*/
+const CHARAS=[
+  {name:'ナナリ',   rank:'S',role:'atk',    attr:'rei', core:'森に棲む蛍の心',   subs:['cr','cd','ap','dg'],    tip:'手数が多くクリダメが効率よく乗る。<b>クリ率80%を目標</b>にクリ率→クリダメの順で優先。'},
+  {name:'早霧',     rank:'S',role:'atk',    attr:'hyou',core:'深紅の双生蝶',      subs:['cr','cd','ap','dg'],    tip:'<b>クリ率・クリダメ最優先</b>。コアのバフ効果でクリ率が補えるためクリダメも積みやすい。'},
+  {name:'白蔵',     rank:'S',role:'atk',    attr:'ju',  core:'深紅の双生蝶',      subs:['cr','cd','dg','ap'],    tip:'呪属性アタッカー。<b>クリ率→クリダメ→ダメージ%</b>の優先度で厳選しよう。'},
+  {name:'ハソール',  rank:'S',role:'atk',    attr:'hyou',core:'ストリート拳王',    subs:['cd','cr','dg','ap'],    tip:'コア4セット効果でクリ率が補われるため<b>クリダメを最優先</b>に積むのがポイント。'},
+  {name:'ファルディーヤ',rank:'S',role:'atk', attr:'rei', core:'悪魔の血：呪い',    subs:['cr','cd','dg','rp'],    tip:'与ダメ+18%のコア効果が強力。<b>クリ率→クリダメ→耐性貫通</b>の順で積もう。'},
+  {name:'ダフォディール',rank:'S',role:'atk', attr:'yami',core:'ディアボロス',      subs:['cr','cd','dg','rp'],    tip:'闇耐性無視コアが最適。<b>クリ率→クリダメ→ダメージ%</b>で積み、暗星反応を活かす。'},
+  {name:'潯(ほとり)',rank:'S',role:'support',attr:'kou', core:'失われた光',         subs:['er','ip','bp','cr'],    tip:'光属性バッファー。<b>エネルギー回復と連間パワー最優先</b>でスキル回転率を上げる。'},
+  {name:'九原',     rank:'S',role:'support',attr:'rei', core:'森に棲む蛍の心',     subs:['er','ip','bp','cr'],    tip:'<b>連間パワー・エネルギー回復が最優先</b>。攻撃系サブステは不要。スキル回転重視。'},
+  {name:'海月',     rank:'S',role:'support',attr:'yami',core:'ディアボロス',        subs:['er','ip','bp','hp'],    tip:'サポート特化。<b>連間パワー→エネルギー回復→ブレイクパワー</b>の順で厳選しよう。'},
+  {name:'主人公(零)',rank:'S',role:'atk',   attr:'gen', core:'影の信条',            subs:['cr','cd','ap','dg'],    tip:'汎用アタッカー。<b>クリ率→クリダメ→攻撃力%</b>で積む。異能連環の起点として重要。'},
+  // Aランク
+  {name:'ちぃちゃん',rank:'A',role:'atk',   attr:'gen', core:'影の信条',            subs:['cr','cd','ap','dg'],    tip:'アタッカー兼ファンス稼ぎ要員。<b>クリ率→クリダメ</b>を優先して火力を底上げ。'},
+  {name:'ハニア',   rank:'A',role:'support',attr:'rei', core:'音速のヘッジホッグ',  subs:['er','ip','bp','ap'],    tip:'バッファー。<b>エネルギー回復最優先</b>でEXレール終結を頻繁に発動させよう。'},
+  {name:'翳(エイ)', rank:'A',role:'atk',    attr:'hyou',core:'ストリート拳王',       subs:['cr','cd','ap','dg'],    tip:'相属性サブアタッカー。<b>クリ率→クリダメ</b>を中心に積み、連環起点として活用。'},
+  {name:'アドレー',  rank:'A',role:'tank',   attr:'gen', core:'小さな大冒険',         subs:['hp','df','bp','ip'],    tip:'タンク兼シールド役。<b>HP%→防御力%</b>を優先。コアのHP増加スタックを活かす。'},
+  {name:'バイザ',   rank:'A',role:'atk',    attr:'ju',  core:'深紅の双生蝶',         subs:['cr','cd','ap','dg'],    tip:'呪属性アタッカー。<b>クリ率80%</b>を目標に、不足分はメインステで補うのがおすすめ。'},
+  {name:'ファントム',rank:'A',role:'support',attr:'gen', core:'音速のヘッジホッグ',   subs:['er','ip','bp','hp'],    tip:'サポート。<b>連間パワー・エネルギー回復</b>を最優先に積み、スキル回転率を維持。'},
+];
+
+const ATTR_COLOR={rei:'#9b59b6',kou:'#f1c40f',hyou:'#3498db',ju:'#e74c3c',yami:'#7f8c8d',gen:'#2ecc71'};
+
 const CORES=[
-  {name:'失われた光',    attr:'kou',  epic:'光異能ダメージ +10%',          legend:'EXレール終結発動後、与ダメージが防御力を25%無視（20秒）'},
-  {name:'ディアボロス',  attr:'yami', epic:'闇異能ダメージ +10%',          legend:'敵の闇耐性を12%無視。暗星/濁燃反応後は24%まで増加（20秒）'},
-  {name:'影の信条',      attr:'gen',  epic:'攻撃力 +10%',                  legend:'バイレールスキル発動後、攻撃力 +25%（20秒）'},
-  {name:'小さな大冒険',  attr:'gen',  epic:'HP +10%',                      legend:'HP減少ごとに最大HP+4%スタック（最大10）。EXレール終結で即10スタック'},
-  {name:'悪魔の血：呪い',attr:'rei',  epic:'魂異能ダメージ +10%',          legend:'与ダメージ +18%。暗星/浸染状態の敵への攻撃時は36%に増加'},
-  {name:'ストリート拳王', attr:'hyou', epic:'相異能ダメージ +10%',          legend:'クリティカル率+14%。延滞/浸染発動時に追加でクリ率+14%（20秒）'},
-  {name:'森に棲む蛍の心', attr:'rei', epic:'霊異能ダメージ +10%',          legend:'味方が霊異能ダメージを与えるたびにクリダメ+8%（最大7スタック、常時有効）'},
-  {name:'深紅の双生蝶',  attr:'ju',   epic:'呪異能ダメージ +10%',          legend:'味方が呪異能ダメージを与えるたびに攻撃力+6%（最大6スタック、常時有効）'},
-  {name:'ティアの夜間酒場',attr:'gen', epic:'HP +10%',                     legend:'HPが50%以下になると防御力+30%（20秒、1試合1回）'},
-  {name:'音速のヘッジホッグ',attr:'gen',epic:'エネルギー回復効率 +10%',    legend:'EXレール終結後、チーム全体の攻撃力+15%（20秒、スタック不可）'},
-  {name:'影の心情',      attr:'gen',  epic:'攻撃力 +10%',                  legend:'バイレールスキル発動後、攻撃力+35%（10秒）'},
-  {name:'深紅の双生蝶 Ⅱ',attr:'ju',  epic:'呪異能ダメージ +10%',          legend:'バイレールスキル発動後に攻撃力がスタックで増加'},
+  {name:'失われた光',      epic:'光属性異能ダメージ +10%',      legend:'EXレール終結発動後、与ダメージが防御力を25%無視（20秒）'},
+  {name:'ディアボロス',    epic:'闇属性異能ダメージ +10%',      legend:'敵の闇耐性を12%無視。暗星/濁燃反応後は24%まで増加（20秒）'},
+  {name:'影の信条',        epic:'攻撃力 +10%',                   legend:'バイレールスキル発動後、攻撃力 +25%（20秒）'},
+  {name:'小さな大冒険',    epic:'HP +10%',                       legend:'HP減少ごとに最大HP+4%スタック（最大10）。EXレール終結で即10スタック'},
+  {name:'悪魔の血：呪い',  epic:'魂属性異能ダメージ +10%',      legend:'与ダメージ +18%。暗星/浸染状態の敵への攻撃時は36%に増加'},
+  {name:'ストリート拳王',  epic:'相属性異能ダメージ +10%',      legend:'クリティカル率+14%。延滞/浸染発動時に追加でクリ率+14%（20秒）'},
+  {name:'森に棲む蛍の心',  epic:'霊属性異能ダメージ +10%',      legend:'味方が霊属性異能ダメージを与えるたびにクリティカルダメージ+8%（最大7スタック、常時）'},
+  {name:'深紅の双生蝶',    epic:'呪属性異能ダメージ +10%',      legend:'味方が呪属性異能ダメージを与えるたびに攻撃力+6%（最大6スタック、常時）'},
+  {name:'ティアの夜間酒場',epic:'HP +10%',                       legend:'HPが50%以下になると防御力+30%（20秒、1試合1回）'},
+  {name:'音速のヘッジホッグ',epic:'エネルギー回復効率 +10%',    legend:'EXレール終結後、チーム全体の攻撃力+15%（20秒）'},
+  {name:'影の心情',        epic:'攻撃力 +10%',                   legend:'バイレールスキル発動後、攻撃力+35%（10秒）'},
+  {name:'深紅の双生蝶 Ⅱ', epic:'呪属性異能ダメージ +10%',      legend:'バイレールスキル発動後に攻撃力がスタックで増加'},
 ];
-const MAINS=['属性ダメージ強化（一致属性）','クリティカル率','クリティカルダメージ','攻撃力%','HP%','防御力%','エネルギー回復効率','ダメージ%'];
+
+const MAINS=['属性異能ダメージ強化（一致属性）','クリティカル率','クリティカルダメージ','攻撃力%','HP%','防御力%','エネルギー回復効率','ダメージ%'];
+
 const SUBS=[
-  {key:'cr',  name:'クリティカル率',      w:{atk:3,support:1,tank:0}},
-  {key:'cd',  name:'クリティカルダメージ', w:{atk:3,support:0,tank:0}},
-  {key:'ap',  name:'攻撃力%',             w:{atk:2,support:1,tank:0}},
-  {key:'dg',  name:'ダメージ%',           w:{atk:2,support:1,tank:0}},
-  {key:'rp',  name:'耐性貫通',             w:{atk:2,support:0,tank:0}},
-  {key:'bp',  name:'ブレイクパワー',       w:{atk:1,support:2,tank:1}},
-  {key:'cp',  name:'連携パワー',           w:{atk:1,support:2,tank:1}},
-  {key:'af',  name:'攻撃力（固定値）',    w:{atk:1,support:0,tank:0}},
-  {key:'er',  name:'エネルギー回復',       w:{atk:0,support:3,tank:1}},
-  {key:'hp',  name:'HP%',                  w:{atk:0,support:1,tank:3}},
-  {key:'df',  name:'防御力%',              w:{atk:0,support:1,tank:2}},
-  {key:'hf',  name:'HP（固定値）',        w:{atk:0,support:0,tank:1}},
+  {key:'cr', name:'クリティカル率',      w:{atk:3,support:1,tank:0}},
+  {key:'cd', name:'クリティカルダメージ', w:{atk:3,support:0,tank:0}},
+  {key:'ap', name:'攻撃力%',             w:{atk:2,support:0,tank:0}},
+  {key:'dg', name:'ダメージ%',           w:{atk:2,support:0,tank:0}},
+  {key:'rp', name:'耐性貫通',            w:{atk:2,support:0,tank:0}},
+  {key:'er', name:'エネルギー回復',      w:{atk:0,support:3,tank:1}},
+  {key:'ip', name:'連間パワー',          w:{atk:0,support:3,tank:1}},
+  {key:'bp', name:'ブレイクパワー',      w:{atk:1,support:2,tank:1}},
+  {key:'af', name:'攻撃力（固定値）',   w:{atk:1,support:0,tank:0}},
+  {key:'hp', name:'HP%',                 w:{atk:0,support:1,tank:3}},
+  {key:'df', name:'防御力%',            w:{atk:0,support:1,tank:2}},
+  {key:'hf', name:'HP（固定値）',       w:{atk:0,support:0,tank:1}},
 ];
+
 const GR=[
   {min:.9,g:'SS',c:'#b8860b',m:'完璧な構成です！'},
   {min:.7,g:'S', c:'#c0392b',m:'非常に優秀なギアです'},
@@ -669,25 +371,67 @@ const GR=[
 const WC={3:'ws',2:'wa',1:'wb',0:'wc'};
 const WL={3:'S',2:'A',1:'B',0:'C'};
 
-/* ─── STATE ─────────────────────────────────── */
-let role='atk';
+let role='atk', selectedChara=null;
 let coreStats=[{key:'',val:0}];
 let blocks=[{stats:[{key:'',val:0}]}];
 function gw(k){const s=SUBS.find(x=>x.key===k);return s?s.w[role]:0;}
 function gr(sc,mx){const p=mx>0?sc/mx:0;return GR.find(g=>p>=g.min)||GR[GR.length-1];}
 
-/* ─── INIT ──────────────────────────────────── */
+/* ── CHARA GRID ─────────────────────────── */
+function buildCharaGrid(){
+  const el=document.getElementById('chara-grid');
+  el.innerHTML=CHARAS.map((c,i)=>`
+    <button type="button" class="chbtn" data-ci="${i}">
+      <span class="attr-dot" style="background:${ATTR_COLOR[c.attr]||'#888'}"></span>
+      <span>${c.name}</span>
+      <span class="rank">${c.rank}ランク</span>
+    </button>`).join('');
+  el.querySelectorAll('.chbtn').forEach(b=>b.addEventListener('click',()=>selectChara(+b.dataset.ci)));
+}
+
+function selectChara(i){
+  selectedChara=i;
+  document.querySelectorAll('.chbtn').forEach((b,j)=>b.classList.toggle('on',j===i));
+  const c=CHARAS[i];
+  // ロール自動設定
+  role=c.role;
+  document.querySelectorAll('[data-r]').forEach(b=>b.classList.toggle('on',b.dataset.r===role));
+  // 属性自動設定
+  document.querySelectorAll('[data-a]').forEach(b=>b.classList.remove('on'));
+  const ab=document.querySelector(`[data-a="${c.attr}"]`)||document.querySelector('[data-a="gen"]');
+  if(ab)ab.classList.add('on');
+  // おすすめコア自動選択
+  const coreIdx=CORES.findIndex(x=>x.name===c.core);
+  const ns=document.getElementById('core-name-sel');
+  if(coreIdx>=0){ns.value=coreIdx;onCoreChange();}
+  // rec box
+  const roleLabel={atk:'アタッカー',support:'サポート',tank:'タンク'}[c.role];
+  document.getElementById('rec-chara-name').textContent=`${c.name} のおすすめ構成`;
+  document.getElementById('rec-core').textContent=c.core;
+  document.getElementById('rec-role').textContent=roleLabel;
+  document.getElementById('rec-sub').innerHTML=
+    `<b>サブステ優先順：</b>${c.subs.map(k=>SUBS.find(s=>s.key===k)?.name).filter(Boolean).join(' → ')}<br>${c.tip}`;
+  document.getElementById('rec-box').classList.add('show');
+  renderCS();renderBL();
+}
+
+/* ── INIT ────────────────────────────────── */
 function init(){
+  buildCharaGrid();
   const ns=document.getElementById('core-name-sel');
   ns.innerHTML='<option value="">— コアを選択 —</option>'+
     CORES.map((c,i)=>`<option value="${i}">${c.name}</option>`).join('');
-  const ms=document.getElementById('core-main-sel');
-  ms.innerHTML='<option value="">— メインステを選択 —</option>'+
+  document.getElementById('core-main-sel').innerHTML=
+    '<option value="">— メインステを選択 —</option>'+
     MAINS.map(s=>`<option value="${s}">${s}</option>`).join('');
   ns.addEventListener('change',onCoreChange);
-  ms.addEventListener('change',recalc);
-  document.getElementById('core-add-btn').addEventListener('click',()=>{if(coreStats.length<4){coreStats.push({key:'',val:0});renderCS();}});
-  document.getElementById('block-add-btn').addEventListener('click',()=>{if(blocks.length<8){blocks.push({stats:[{key:'',val:0}]});renderBL();}});
+  document.getElementById('core-main-sel').addEventListener('change',recalc);
+  document.getElementById('core-add-btn').addEventListener('click',()=>{
+    if(coreStats.length<4){coreStats.push({key:'',val:0});renderCS();}
+  });
+  document.getElementById('block-add-btn').addEventListener('click',()=>{
+    if(blocks.length<8){blocks.push({stats:[{key:'',val:0}]});renderBL();}
+  });
   document.querySelectorAll('[data-r]').forEach(b=>b.addEventListener('click',()=>{
     role=b.dataset.r;
     document.querySelectorAll('[data-r]').forEach(x=>x.classList.toggle('on',x.dataset.r===role));
@@ -716,18 +460,16 @@ function onCoreChange(){
   eb.classList.add('show');recalc();
 }
 
-/* ─── RENDER CORE STATS ─────────────────────── */
 function sopts(sel){
   return '<option value="">— ステータスを選択 —</option>'+
     SUBS.map(s=>`<option value="${s.key}"${s.key===sel?' selected':''}>${s.name}</option>`).join('');
 }
+
 function renderCS(){
-  // preserve selections from DOM before rebuild
-  const list=document.getElementById('core-list');
-  list.querySelectorAll('select').forEach((el,i)=>{
-    if(coreStats[i]!==undefined) coreStats[i].key=el.value;
+  document.getElementById('core-list').querySelectorAll('select').forEach((el,i)=>{
+    if(coreStats[i])coreStats[i].key=el.value;
   });
-  list.innerHTML=coreStats.map((st,i)=>`
+  document.getElementById('core-list').innerHTML=coreStats.map((st,i)=>`
     <div class="sir">
       <div class="wpill ${WC[gw(st.key)]}" id="cp${i}">${WL[gw(st.key)]}</div>
       <select class="fsel" data-ci="${i}" onchange="coreStats[${i}].key=this.value;recalc()">${sopts(st.key)}</select>
@@ -737,15 +479,12 @@ function renderCS(){
   recalc();
 }
 
-/* ─── RENDER BLOCKS ─────────────────────────── */
 function renderBL(){
-  // preserve selections from DOM before rebuild
-  const bl=document.getElementById('block-list');
-  bl.querySelectorAll('[data-bi]').forEach(sel=>{
-    const bi=+sel.dataset.bi, si=+sel.dataset.si;
-    if(blocks[bi]&&blocks[bi].stats[si]!==undefined) blocks[bi].stats[si].key=sel.value;
+  document.getElementById('block-list').querySelectorAll('[data-bi]').forEach(sel=>{
+    const bi=+sel.dataset.bi,si=+sel.dataset.si;
+    if(blocks[bi]&&blocks[bi].stats[si])blocks[bi].stats[si].key=sel.value;
   });
-  bl.innerHTML=blocks.map((blk,bi)=>`
+  document.getElementById('block-list').innerHTML=blocks.map((blk,bi)=>`
     <div class="bcard">
       <div class="bcard-head">
         <span class="bcard-num">Block ${String(bi+1).padStart(2,'0')}</span>
@@ -769,7 +508,6 @@ function renderBL(){
   recalc();
 }
 
-/* ─── RECALC ─────────────────────────────────── */
 function recalc(){
   const MC=12,MB=12;
   let cs=0;
@@ -778,17 +516,14 @@ function recalc(){
     const p=document.getElementById('cp'+i);
     if(p){p.className='wpill '+WC[w];p.textContent=WL[w];}
   });
-  const cg=gr(cs,MC);
-  const cpct=Math.min(cs/MC*100,100);
+  const cg=gr(cs,MC),cpct=Math.min(cs/MC*100,100);
   setT('core-snum',cs);setT('core-sgrade',cg.g);setT('core-msg',cg.m);
   setS('core-snum','color',cg.c);setS('core-sgrade','color',cg.c);
   setS('core-bar','width',cpct.toFixed(0)+'%');
-  const cpills=coreStats.filter(s=>s.key).map(s=>{
+  document.getElementById('core-pills').innerHTML=coreStats.filter(s=>s.key).map(s=>{
     const info=SUBS.find(x=>x.key===s.key),w=gw(s.key);
     return `<div class="spill"><span class="wpill ${WC[w]}" style="width:18px;height:18px;font-size:9px">${WL[w]}</span>${info.name}</div>`;
   }).join('');
-  document.getElementById('core-pills').innerHTML=cpills;
-
   let bt=0;
   blocks.forEach((blk,bi)=>{
     let bs=0;
@@ -803,18 +538,22 @@ function recalc(){
     if(se){se.textContent=bs;se.style.color=bg.c;}
     if(ge){ge.textContent=bg.g;ge.style.color=bg.c;}
   });
-
   const total=cs+bt,maxT=MC+blocks.length*MB;
   const tg=gr(total,maxT),tpct=Math.min(total/maxT*100,100);
   setT('t-num',total);setT('t-grade',tg.g);setT('t-desc',tg.m);
   setT('t-core',cs);setT('t-block',bt);
   setS('t-bar','width',tpct.toFixed(0)+'%');
-
+  const ns=document.getElementById('core-name-sel');
+  const cname=ns.value!==''?CORES[+ns.value].name:'（コア未選択）';
+  const charaName=selectedChara!==null?CHARAS[selectedChara].name:'';
+  const roleLabel={atk:'アタッカー',support:'サポート',tank:'タンク'}[role];
+  const tweet=`【NTE ギアスコア】${charaName?` / ${charaName}`:''}\n${cname} / ${roleLabel}\nスコア: ${total}pts（${tg.g}）\n#NTE #ネバエバ\nhttps://monowasurei0412.github.io/nte-gear-checker/`;
+  document.getElementById('share-btn').href='https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet);
   const all={};
   [...coreStats,...blocks.flatMap(b=>b.stats)].forEach(st=>{if(st.key)all[st.key]=(all[st.key]||0)+1;});
   const bkEl=document.getElementById('t-bklist');
   if(!Object.keys(all).length){
-    bkEl.innerHTML='<div style="color:var(--ink5);font-size:12px;font-family:var(--ff-mono);padding:10px 0">まだ入力がありません</div>';
+    bkEl.innerHTML='<div style="color:var(--ink5);font-size:12px;font-family:var(--fm);padding:10px 0">まだ入力がありません</div>';
   }else{
     bkEl.innerHTML=Object.entries(all).sort((a,b)=>gw(b[0])-gw(a[0])).map(([k,cnt])=>{
       const info=SUBS.find(s=>s.key===k),w=gw(k);
