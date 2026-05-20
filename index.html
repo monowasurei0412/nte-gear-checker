@@ -308,25 +308,24 @@ footer{border-top:1.5px solid var(--paper3);padding:20px 0;font-family:var(--fm)
    tip: ひとことアドバイス
 */
 const CHARAS=[
-  // Sランク（恒常）
-  {name:'ナナリ',      rank:'S', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'手数が多くクリダメが効率よく乗る。<b>クリ率80%を目標</b>にクリ率→クリダメの順で優先。'},
-  {name:'早霧',        rank:'S', role:'support', attr:'ju',  core:'深紅の双生蝶',      subs:['er','ip','cr','cd'],  tip:'バフ役。<b>連間パワー・エネルギー回復</b>を優先しつつ、余裕があればクリ率も確保しよう。'},
-  {name:'白蔵',        rank:'S', role:'atk',     attr:'ju',  core:'深紅の双生蝶',      subs:['cr','cd','dg','ap'],  tip:'呪属性アタッカー。<b>クリ率→クリダメ→ダメージ%</b>の優先度で厳選しよう。'},
-  {name:'ハソール',    rank:'S', role:'atk',     attr:'hyou',core:'ストリート拳王',     subs:['cd','cr','dg','ap'],  tip:'コア4セット効果でクリ率が補われるため<b>クリダメを最優先</b>に積むのがポイント。'},
-  {name:'ファルディーヤ',rank:'S',role:'tank',   attr:'rei', core:'悪魔の血：呪い',    subs:['hp','df','bp','cr'],  tip:'生存役。<b>HP%→防御力%</b>を優先。コアの与ダメージ強化でサブ火力も出せる。'},
-  {name:'ダフォディール',rank:'S',role:'atk',    attr:'yami',core:'ディアボロス',       subs:['cr','cd','dg','rp'],  tip:'闇耐性無視コアが最適。<b>クリ率→クリダメ→ダメージ%</b>で積み、暗星反応を活かす。'},
-  {name:'九原',        rank:'S', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'霊属性アタッカー。<b>クリ率→クリダメ</b>を優先。凸で回復も担えるため汎用性が高い。'},
-  {name:'異能者・零',  rank:'S', role:'atk',     attr:'kou', core:'影の信条',           subs:['cr','cd','ap','dg'],  tip:'主人公。<b>クリ率→クリダメ→攻撃力%</b>で積む。異能連環の起点として重要。'},
-  {name:'ちぃちゃん',  rank:'S', role:'atk',     attr:'kou', core:'影の信条',           subs:['cr','cd','ap','dg'],  tip:'光属性アタッカー兼ファンス稼ぎ要員。<b>クリ率→クリダメ</b>を優先して火力を底上げ。'},
-  // Sランク（限定）
-  {name:'潯(ほとり)',  rank:'S限',role:'atk',    attr:'kou', core:'失われた光',         subs:['cr','cd','ap','dg'],  tip:'光属性アタッカー。<b>失われた光</b>が最適コア。クリ率→クリダメ→攻撃力%で積もう。'},
-  // Aランク
-  {name:'翳',          rank:'A', role:'atk',     attr:'hyou',core:'ストリート拳王',     subs:['cr','cd','ap','dg'],  tip:'相属性サブアタッカー。<b>クリ率→クリダメ</b>を中心に積み、連環起点として活用。'},
-  {name:'ミント',      rank:'A', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'霊属性アタッカー。<b>クリ率→クリダメ</b>を積みつつナナリの連環起点として活躍。'},
-  {name:'ハニア',      rank:'A', role:'support', attr:'rei', core:'音速のヘッジホッグ', subs:['er','ip','bp','ap'],  tip:'バッファー。<b>エネルギー回復最優先</b>でEXレール終結を頻繁に発動させよう。'},
-  {name:'エドガー',    rank:'A', role:'tank',    attr:'kou', core:'小さな大冒険',       subs:['hp','df','bp','ip'],  tip:'光属性生存役。<b>HP%→防御力%</b>を優先。耐久を固めてパーティを守ろう。'},
-  {name:'アドレー',    rank:'A', role:'tank',    attr:'ju',  core:'小さな大冒険',       subs:['hp','df','bp','ip'],  tip:'タンク兼シールド役。<b>HP%→防御力%</b>を優先。コアのHP増加スタックを活かす。'},
-  {name:'海月',        rank:'A', role:'atk',     attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'],  tip:'魂属性アタッカー。<b>クリ率→クリダメ</b>を積み、暗星パーティの一員として活躍。'},
+  // ── Sランク 10体 ─────────────────────────
+  {name:'ナナリ',       rank:'S',role:'atk',    attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'], tip:'手数が多くクリダメが効率よく乗る。<b>クリ率80%を目標</b>にクリ率→クリダメの順で優先。'},
+  {name:'早霧',         rank:'S',role:'support',attr:'ju',  core:'深紅の双生蝶',      subs:['er','ip','cr','cd'], tip:'呪属性バフ役。<b>連間パワー・エネルギー回復</b>を優先しつつ、余裕があればクリ率も確保しよう。'},
+  {name:'白蔵',         rank:'S',role:'atk',    attr:'ju',  core:'深紅の双生蝶',      subs:['cr','cd','dg','ap'], tip:'呪属性アタッカー。<b>クリ率→クリダメ→ダメージ%</b>の優先度で厳選しよう。'},
+  {name:'ハソール',     rank:'S',role:'atk',    attr:'hyou',core:'ストリート拳王',    subs:['cd','cr','dg','ap'], tip:'コア4セット効果でクリ率が補われるため<b>クリダメを最優先</b>に積むのがポイント。'},
+  {name:'ファルディーヤ',rank:'S',role:'tank',  attr:'rei', core:'小さな大冒険',      subs:['hp','df','bp','ip'], tip:'霊属性生存役。<b>HP%→防御力%→ブレイクパワー</b>を優先して耐久を固めよう。'},
+  {name:'ダフォディール',rank:'S',role:'atk',   attr:'yami',core:'ディアボロス',      subs:['cr','cd','dg','rp'], tip:'闇耐性無視コアが最適。<b>クリ率→クリダメ→ダメージ%</b>で積み、暗星反応を活かす。'},
+  {name:'九原',         rank:'S',role:'atk',    attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'], tip:'霊属性アタッカー。<b>クリ率→クリダメ</b>を優先。凸で回復も担えるため汎用性が高い。'},
+  {name:'異能者・零',   rank:'S',role:'atk',    attr:'kou', core:'影の信条',           subs:['cr','cd','ap','dg'], tip:'光属性主人公。<b>クリ率→クリダメ→攻撃力%</b>で積む。異能連環の起点として重要。'},
+  {name:'ちぃちゃん',   rank:'S',role:'atk',    attr:'kou', core:'影の信条',           subs:['cr','cd','ap','dg'], tip:'光属性アタッカー兼ファンス稼ぎ要員。<b>クリ率→クリダメ</b>を優先して火力を底上げ。'},
+  {name:'潯(ほとり)',   rank:'S',role:'atk',    attr:'kou', core:'失われた光',         subs:['cr','cd','ap','dg'], tip:'光属性アタッカー。<b>失われた光</b>が最適コア。クリ率→クリダメ→攻撃力%で積もう。'},
+  // ── Aランク 6体 ─────────────────────────
+  {name:'翳',           rank:'A',role:'atk',    attr:'hyou',core:'ストリート拳王',    subs:['cr','cd','ap','dg'], tip:'相属性サブアタッカー。<b>クリ率→クリダメ</b>を中心に積み、連環起点として活用。'},
+  {name:'ミント',       rank:'A',role:'atk',    attr:'rei', core:'森に棲む蛍の心',    subs:['cr','cd','ap','dg'], tip:'霊属性アタッカー。<b>クリ率→クリダメ</b>を積みつつナナリの連環起点として活躍。'},
+  {name:'ハニア',       rank:'A',role:'support',attr:'rei', core:'音速のヘッジホッグ',subs:['er','ip','bp','ap'], tip:'魂属性バッファー。<b>エネルギー回復最優先</b>でEXレール終結を頻繁に発動させよう。'},
+  {name:'エドガー',     rank:'A',role:'tank',   attr:'kou', core:'小さな大冒険',      subs:['hp','df','bp','ip'], tip:'光属性生存役。<b>HP%→防御力%</b>を優先。耐久を固めてパーティを守ろう。'},
+  {name:'アドレー',     rank:'A',role:'tank',   attr:'ju',  core:'小さな大冒険',      subs:['hp','df','bp','ip'], tip:'呪属性タンク兼シールド役。<b>HP%→防御力%</b>を優先。コアのHP増加スタックを活かす。'},
+  {name:'海月',         rank:'A',role:'atk',    attr:'rei', core:'悪魔の血：呪い',    subs:['cr','cd','ap','dg'], tip:'魂属性アタッカー。<b>クリ率→クリダメ</b>を積み、暗星パーティの一員として活躍。'},
 ];
 
 const ATTR_COLOR={rei:'#9b59b6',kou:'#f1c40f',hyou:'#3498db',ju:'#e74c3c',yami:'#7f8c8d',gen:'#2ecc71'};
